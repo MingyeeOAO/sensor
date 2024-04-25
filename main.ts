@@ -1,13 +1,15 @@
 let run = false
 const GROUP = 10
 
-let notes= [Note.D, Note.E, Note.G, Note.E, Note.B, 0, -1, Note.B, 0, -1, Note.A, 0, 0, -1, -1*BeatFraction.Whole*4,
+const notes= [Note.D, Note.E, Note.G, Note.E, Note.B, 0, -1, Note.B, 0, -1, Note.A, 0, 0, -1, -1*BeatFraction.Whole*4,
     Note.D, Note.E, Note.G, Note.E, Note.A, 0, -1, Note.A, 0, -1, Note.G, 0, Note.F, Note.E, 0,
     Note.D, Note.E, Note.G, Note.E, Note.G, 0, Note.A, 0, 0, Note.F, 0, Note.E, Note.D4, 0, -1, Note.D4, 0, Note.A, 0, 0, Note.G, 0, -1, -400, 
     Note.D, Note.E, Note.G, Note.E, Note.B, 0, -1, Note.B, 0, -1, Note.A, 0, 0, -1, -1*BeatFraction.Whole*4,
     Note.D, Note.E, Note.G, Note.E, Note.D5, 0, 0, Note.FSharp, 0, 0, Note.G, 0, Note.F, Note.E, 0,
     Note.D, Note.E, Note.G, Note.E, Note.G, 0, Note.A, 0, Note.F, 0, Note.E, Note.D4, -1, 0, Note.D4, 0, Note.A, 0, 0, Note.G, 0, -1, -1*BeatFraction.Whole
-    ]
+]
+
+const nvg = new Music(notes, 114);
 
 radio.setGroup(GROUP)
 basic.forever( () => {
@@ -33,13 +35,14 @@ radio.onReceivedValue((name: string, value: number) => {
             return print("ERROR!")
         }
         return print(value);
-    }
+    } 
     else if(name === "Dis"){
         print(value);
         if(value <= 5) shake(500*(6-value));
     }
     else if(name === "Hum") {
         print(value);
+        if(value >= 50) nvg.play();
     }
     else{
         return print("Unknown Data")
