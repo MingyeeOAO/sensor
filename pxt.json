@@ -10,7 +10,8 @@
         "main.blocks",
         "main.ts",
         "README.md",
-        "lib/Music.ts"
+        "lib/Music.ts",
+        "lib/Color.ts"
     ],
     "testFiles": [
         "test.ts"
