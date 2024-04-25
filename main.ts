@@ -1,5 +1,6 @@
 let run = false
 const GROUP = 10
+let strip = neopixel.create(DigitalPin.P2, 1, NeoPixelMode.RGB)
 
 const notes= [Note.D, Note.E, Note.G, Note.E, Note.B, 0, -1, Note.B, 0, -1, Note.A, 0, 0, -1, -1*BeatFraction.Whole*4,
     Note.D, Note.E, Note.G, Note.E, Note.A, 0, -1, Note.A, 0, -1, Note.G, 0, Note.F, Note.E, 0,
