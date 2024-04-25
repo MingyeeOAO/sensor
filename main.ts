@@ -42,6 +42,7 @@ radio.onReceivedValue((name: string, value: number) => {
         if(value <= 5) shake(500*(6-value));
     }
     else if(name === "Hum") {
+        if(value === -999) return print('Error!')
         print(value);
         if(value >= 50) nvg.play();
     }
