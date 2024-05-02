@@ -1,5 +1,6 @@
 let run = false
 const GROUP = 38
+const dev = true // devoloper mode
 let strip = neopixel.create(DigitalPin.P2, 1, NeoPixelMode.RGB)
 
 const notes= [Note.D, Note.E, Note.G, Note.E, Note.B, 0, -1, Note.B, 0, -1, Note.A, 0, 0, -1, -1*BeatFraction.Whole*4,
@@ -16,25 +17,42 @@ const Blue = new Color(0, 0, 255)
 const Red = new Color(255, 0, 0)
 
 let temperature = 27;
+let mode = true
 
 radio.setGroup(GROUP)
 
+input.onGesture(Gesture.Shake, () => {
+    mode = !mode;
+    if(mode) return print("Controlling Mode")
+    return print("Tutorial, Press Any Key")
+})
+
 basic.forever( () => {
-    
-    strip.showColor(getColorByTem(20, 35, temperature).hex)
+    strip.showColor(getColorByTem(20, 35, temperature).hex) // modify here to adjust max and min tem
 })
 
 input.onButtonPressed(Button.A,() => {
-    radio.sendString("getTem")
-    if(!ck(2000)) return print("No Response");
+    if(mode) {
+        radio.sendString("getTem")
+        if(!ck(2000)) return print("No Response");
+    }
+    else return print("Get Temperature");
 })
+
 input.onButtonPressed(Button.B, () =>{
-    radio.sendString("getDis")
-    if(!ck(2000)) return print("No Response");
+    if(mode){
+        radio.sendString("getDis")
+        if(!ck(2000)) return print("No Response");
+    }
+    return print("Get Distance")
 })
+
 input.onButtonPressed(Button.AB, function() {
-    radio.sendString("getHum")
-    if (!ck(2000)) return print("No Response")
+    if(mode) {
+        radio.sendString("getHum")
+        if (!ck(2000)) return print("No Response")
+    }
+    else return print("Get Humidity");
 })
 radio.onReceivedValue((name: string, value: number) => {
     swch()
@@ -55,7 +73,7 @@ radio.onReceivedValue((name: string, value: number) => {
         if(value >= 50) nvg.play();
     }
     else{
-        return print("Unknown Data")
+        if (dev) return print("Received Unknown Data")
     }
 })
 
