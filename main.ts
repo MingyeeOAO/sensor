@@ -11,7 +11,10 @@ const notes= [Note.D, Note.E, Note.G, Note.E, Note.B, 0, -1, Note.B, 0, -1, Note
     Note.D, Note.E, Note.G, Note.E, Note.G, 0, Note.A, 0, Note.F, 0, Note.E, Note.D4, -1, 0, Note.D4, 0, Note.A, 0, 0, Note.G, 0, -1, -1*BeatFraction.Whole
 ]
 
+const n2 = [Note.A4, Note.GSharp5, -1]
+
 const nvg = new Music(notes, 114);
+const st = new Music(n2, 120);
 
 const Blue = new Color(0, 0, 255)
 const Red = new Color(255, 0, 0)
@@ -21,6 +24,10 @@ let temperature = input.temperature();
 let mode = true
 
 radio.setGroup(GROUP)
+
+print("219 Group 38")
+shake(1000)
+st.play();
 
 input.onGesture(Gesture.ScreenDown, () => {
     mode = !mode;
