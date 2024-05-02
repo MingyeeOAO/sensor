@@ -15,16 +15,17 @@ const nvg = new Music(notes, 114);
 
 const Blue = new Color(0, 0, 255)
 const Red = new Color(255, 0, 0)
+const txtspd = 60
 
-let temperature = 27;
+let temperature = input.temperature();
 let mode = true
 
 radio.setGroup(GROUP)
 
-input.onGesture(Gesture.Shake, () => {
+input.onGesture(Gesture.ScreenDown, () => {
     mode = !mode;
-    if(mode) return print("Controlling Mode")
-    return print("Tutorial, Press Any Key")
+    if(mode) return print("Controlling", txtspd)
+    return print("Tutorial", txtspd)
 })
 
 basic.forever( () => {
@@ -36,7 +37,7 @@ input.onButtonPressed(Button.A,() => {
         radio.sendString("getTem")
         if(!ck(2000)) return print("No Response");
     }
-    else return print("Get Temperature");
+    else return print("Get Temperature", txtspd);
 })
 
 input.onButtonPressed(Button.B, () =>{
@@ -44,7 +45,7 @@ input.onButtonPressed(Button.B, () =>{
         radio.sendString("getDis")
         if(!ck(2000)) return print("No Response");
     }
-    return print("Get Distance")
+    else return print("Get Distance", txtspd)
 })
 
 input.onButtonPressed(Button.AB, function() {
@@ -52,7 +53,7 @@ input.onButtonPressed(Button.AB, function() {
         radio.sendString("getHum")
         if (!ck(2000)) return print("No Response")
     }
-    else return print("Get Humidity");
+    else return print("Get Humidity", txtspd);
 })
 radio.onReceivedValue((name: string, value: number) => {
     swch()
@@ -66,6 +67,10 @@ radio.onReceivedValue((name: string, value: number) => {
     else if(name === "Dis"){
         print(value);
         if(value <= 5) shake(500*(6-value));
+        if (value < 10) {
+            basic.pause(500);
+            basic.clearScreen();
+        }
     }
     else if(name === "Hum") {
         if(value === -999) return print('Error!')
