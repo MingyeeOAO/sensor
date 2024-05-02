@@ -1,5 +1,5 @@
 let run = false
-const GROUP = 10
+const GROUP = 38
 let strip = neopixel.create(DigitalPin.P2, 1, NeoPixelMode.RGB)
 
 const notes= [Note.D, Note.E, Note.G, Note.E, Note.B, 0, -1, Note.B, 0, -1, Note.A, 0, 0, -1, -1*BeatFraction.Whole*4,
@@ -12,9 +12,16 @@ const notes= [Note.D, Note.E, Note.G, Note.E, Note.B, 0, -1, Note.B, 0, -1, Note
 
 const nvg = new Music(notes, 114);
 
-radio.setGroup(GROUP)
-basic.forever( () => {
+const Blue = new Color(0, 0, 255)
+const Red = new Color(255, 0, 0)
 
+let temperature = 27;
+
+radio.setGroup(GROUP)
+
+basic.forever( () => {
+    
+    strip.showColor(getColorByTem(20, 35, temperature).hex)
 })
 
 input.onButtonPressed(Button.A,() => {
@@ -35,6 +42,7 @@ radio.onReceivedValue((name: string, value: number) => {
         if(value === -999){
             return print("ERROR!")
         }
+        temperature = value;
         return print(value);
     } 
     else if(name === "Dis"){
@@ -67,9 +75,17 @@ function ck(wt : number){
 }
 
 function shake(duration : number) {
-
     pins.digitalWritePin(DigitalPin.P1, 1)
     basic.pause(duration);
     pins.digitalWritePin(DigitalPin.P1, 0);
     return
+}
+
+function colorRamp(l : Color, r : Color, t : number) {
+    const tt = 1-t
+    return new Color(l.r*t + r.r*tt, l.g*t+r.g*tt, l.b*t + r.b*tt);
+}
+
+function getColorByTem(l : number, r : number, t : number){
+    return colorRamp(Blue, Red, t/(r-l));
 }
